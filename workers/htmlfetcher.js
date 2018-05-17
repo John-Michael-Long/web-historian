@@ -18,10 +18,10 @@ archive.readListOfUrls((data) => {
   //if not then call download url
   data.forEach((site) => {
     archive.isUrlArchived(site, (check) => {
-      if(!check) {
-        archive.downloadUrl(site)
+      if (!check) {
+        archive.downloadUrl(site);
       }
-    })
-  })
+    });
+  });
   
 });
