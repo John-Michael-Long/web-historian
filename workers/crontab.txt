@@ -1,0 +1,2 @@
+MAILTO=""
+* * * * * /Users/student/Desktop/code/hrsf95-web-historian/workershtmlfetcher.js >/Users/student/Desktop/code/hrsf95-web-historian/workers/cronMailTo.txt

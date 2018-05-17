@@ -23,9 +23,9 @@ if (module.parent) {
 //SERVER:
 //listens for requests from client
 //Handles requests:
-  //Posts to /archives/sites.txt 
-  //If: site is in /archives/sites/ then serve back to client
-  //else: serve 'loading' html
+//Posts to /archives/sites.txt 
+//If: site is in /archives/sites/ then serve back to client
+//else: serve 'loading' html
 
 //WORKER:
 //use chron

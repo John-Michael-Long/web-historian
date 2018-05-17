@@ -7,8 +7,8 @@ var sendResponse = function(res, asset, data, statusCode = 200 ) {
   res.writeHead(statusCode, httpHelpers.headers);
   
   httpHelpers.serveAssets(res, asset, function(err, data) {
-    if(err) { 
-      return console.error(err);   //need to handle error good
+    if (err) { 
+      return console.error(err); //need to handle error good
     }  
     res.end(data.toString());
   });
@@ -17,11 +17,11 @@ var sendResponse = function(res, asset, data, statusCode = 200 ) {
 
 exports.handleRequest = function (req, res) {
   
-  console.log('req.method:',req.method)
-  console.log('req.url:',req.url)
+  console.log('req.method:', req.method);
+  console.log('req.url:', req.url);
   
-  if(req.method === 'GET') {
-    sendResponse(res, archive.paths.siteAssets + '/index.html' )
+  if (req.method === 'GET') {
+    sendResponse(res, archive.paths.siteAssets + '/index.html' );
     
   } else if (req.method === 'POST') {
     
@@ -36,15 +36,15 @@ exports.handleRequest = function (req, res) {
       let url = body.substring(4) + '\n';
       
       archive.isUrlInList(url, function(err, data) {
-        if(err) {
+        if (err) {
           throw error;
         } else if (data === null) {
           //do something with data
           //send loading.html to client
-          sendResponse(res, archive.paths.siteAssets + '/loading.html' , null, 302)
+          sendResponse(res, archive.paths.siteAssets + '/loading.html', null, 302);
           console.log('DATA IS NULL');
         }
-      })
+      });
       
       //Need to implement archive-helpers...
       
@@ -66,7 +66,7 @@ exports.handleRequest = function (req, res) {
 //SERVER:
 //listens for requests from client
 //Handles requests:
-  //Posts to /archives/sites.txt 
-  //If: site is in /archives/sites/ then serve back to client
-  //else: serve 'loading' html
+//Posts to /archives/sites.txt 
+//If: site is in /archives/sites/ then serve back to client
+//else: serve 'loading' html
 
