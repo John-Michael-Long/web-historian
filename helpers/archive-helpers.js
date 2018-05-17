@@ -26,22 +26,73 @@ exports.initialize = function(pathsObj) {
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback) {
+  
+  fs.readFile(exports.paths.list, (err, data) => {
+    if (err) {
+      throw error;
+    } else {
+      let dataArr = data.toString().split('\n');
+      callback(dataArr.slice(0, dataArr.length - 1));
+    }
+  })
+  
+  
+  
   //read sites.txt, format data
   //call isUrlinList
+  
+  //callback could return formmated list of sites.txt
+  //to another function (e.g. isUrlList)
 };
 
-exports.isUrlInList = function(url, callback) {
-  //if not in list, then call addUrlToList
-    //return loading.html to client
-  //if it is in the list,
-    //return the archives/sites (appropriate site)
+// fs.readFile()
+
+exports.isUrlInList = function(url, callback) { 
+  
+  exports.readListOfUrls((data) => {
+    if(data.indexOf(url)  === -1){
+      //if not in list, 
+        //send loading.html to client
+        //add url to list
+      callback(null, null) 
+      exports.addUrlToList(url)
+    } else {
+      
+      //if the data is in the list, and it is in the is UrlArachived is true
+      //send client to url endpoint in archives/sites
+        //because, if crom hasn't added the site, we don't 
+        //want to send the user to an endpoint we don't have
+      
+      //send archived site to client
+      //if this url is in our object referencing downloaded sites
+      //send our client to that endpoint
+    }
+  });
+  // call readListOfUrls(callback)
+    //callback = f() ??
+
+  //if url is in list,
+  
+  // IF error:
+  //callback();
+  // IF NOT IN LIST;
+    //callback(null, null);
 };
 
 exports.addUrlToList = function(url, callback) {
   //fs.appendFile to our sites.txt
+  fs.appendFile(exports.paths.list, url, 'utf8', (err) => {
+    if (err) {
+      throw err;
+    } else {
+      console.log('wrote to file url::: ', url); 
+    }
+  });
+  
 };
 
 exports.isUrlArchived = function(url, callback) {
+  //check tests for ideas to see if a url has been archived or not
   //worker? 
   //work is going to read our list of urls, 
   // if a url in the list is not archives/sites
@@ -51,4 +102,9 @@ exports.isUrlArchived = function(url, callback) {
 exports.downloadUrls = function(urls) {
   //this will have to do some .ajax request, get the site info
   //add site info as a new file in archives/sites
+  
+  //once downloadUrls is completed,
+  //add urls to an object
+    //which will later be access to serve client urls that 
+    //have been added to archives/sites/...url
 };

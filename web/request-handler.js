@@ -3,10 +3,10 @@ var archive = require('../helpers/archive-helpers');
 var httpHelpers = require('./http-helpers.js');
 // require more modules/folders here!
 
-var sendResponse = function(res, data, statusCode = 200) {
+var sendResponse = function(res, asset, data, statusCode = 200 ) {
   res.writeHead(statusCode, httpHelpers.headers);
   
-  httpHelpers.serveAssets(res, null, function(err, data) {
+  httpHelpers.serveAssets(res, asset, function(err, data) {
     if(err) { 
       return console.error(err);   //need to handle error good
     }  
@@ -21,7 +21,8 @@ exports.handleRequest = function (req, res) {
   console.log('req.url:',req.url)
   
   if(req.method === 'GET') {
-    sendResponse(res, null)
+    sendResponse(res, archive.paths.siteAssets + '/index.html' )
+    
   } else if (req.method === 'POST') {
     
     //************** get message ************
@@ -32,9 +33,29 @@ exports.handleRequest = function (req, res) {
       body.push(chunk);
     }).on('end', () => {
       body = Buffer.concat(body).toString();
-      httpHelpers.writeToFile(body)
+      let url = body.substring(4) + '\n';
       
-    })
+      archive.isUrlInList(url, function(err, data) {
+        if(err) {
+          throw error;
+        } else if (data === null) {
+          //do something with data
+          //send loading.html to client
+          sendResponse(res, archive.paths.siteAssets + '/loading.html' , null, 302)
+          console.log('DATA IS NULL');
+        }
+      })
+      
+      //Need to implement archive-helpers...
+      
+      //httpHelpers.writeToFile(body)
+      
+      
+      
+      //TODO: send the status code... writeHead(302...etc)
+      // res.writeHead(302, httpHelpers.headers);
+      // res.end();
+    });
     
   
   }

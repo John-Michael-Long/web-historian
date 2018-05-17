@@ -6,6 +6,9 @@ var path = require('path');
 var supertest = require('supertest');
 var initialize = require('../web/initialize.js');
 
+//NOTE we could change tests to expect form data
+//e.g. url=data
+
 initialize(path.join(__dirname, '/testdata'));
 
 archive.initialize({
@@ -49,6 +52,7 @@ describe('server', function() {
 
       it('Should 404 when asked for a nonexistent file', function(done) {
         request.get('/arglebargle').expect(404, done);
+        //should handle GET request with end points added to http://127.0.0.1:8080/areljlkjask
       });
     });
 
@@ -70,6 +74,7 @@ describe('server', function() {
             }
 
             done(err);
+            
           });
       });
     });

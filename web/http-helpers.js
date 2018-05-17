@@ -16,7 +16,7 @@ exports.serveAssets = function(res, asset, callback) {
   // css, or anything that doesn't change often.)
   console.log('archivePath:', archive.paths.siteAssets)
   
-  fs.readFile(archive.paths.siteAssets + '/index.html', callback)
+  fs.readFile(asset, callback)
   
   
 };
