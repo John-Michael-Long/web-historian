@@ -26,16 +26,29 @@ exports.initialize = function(pathsObj) {
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(callback) {
+  //read sites.txt, format data
+  //call isUrlinList
 };
 
 exports.isUrlInList = function(url, callback) {
+  //if not in list, then call addUrlToList
+    //return loading.html to client
+  //if it is in the list,
+    //return the archives/sites (appropriate site)
 };
 
 exports.addUrlToList = function(url, callback) {
+  //fs.appendFile to our sites.txt
 };
 
 exports.isUrlArchived = function(url, callback) {
+  //worker? 
+  //work is going to read our list of urls, 
+  // if a url in the list is not archives/sites
+    // then we need to call downloadUrls
 };
 
 exports.downloadUrls = function(urls) {
+  //this will have to do some .ajax request, get the site info
+  //add site info as a new file in archives/sites
 };

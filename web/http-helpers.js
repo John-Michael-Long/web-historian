@@ -14,7 +14,35 @@ exports.serveAssets = function(res, asset, callback) {
   // Write some code here that helps serve up your static files!
   // (Static files are things like html (yours or archived from others...),
   // css, or anything that doesn't change often.)
+  console.log('archivePath:', archive.paths.siteAssets)
+  
+  fs.readFile(archive.paths.siteAssets + '/index.html', callback)
+  
+  
 };
+
+// exports.getMessage = function(request) {
+//   let body = [];
+//   request.on('errror', (err) => {
+//     console.error(err);
+//   }).on('data', (chunk) => {
+//     body.push(chunk);
+//   }).on('end', () => {
+//     body = Buffer.concat(body).toString();
+//     console.log('body:',body)
+//     return body;
+//   })
+// }
+
+exports.writeToFile = function(message) {
+  
+  message = message.substring(4) + '\n';
+  
+  fs.appendFile(archive.paths.list, message, 'utf8', (err) => {
+    if (err) throw err;
+    console.log('wrote url ' + message + ' to sites.txt')
+  });
+}
 
 
 
