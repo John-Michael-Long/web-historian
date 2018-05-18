@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
+var request = require('request');
 
 /*
  * You will need to reuse the same paths many times over in the course of this sprint.
@@ -37,12 +38,6 @@ exports.readListOfUrls = function(callback) {
       callback(dataArr.slice(0, dataArr.length - 1));
     }
   });
-  
-  //read sites.txt, format data
-  //call isUrlinList
-  
-  //callback could return formmated list of sites.txt
-  //to another function (e.g. isUrlList)
 };
 
 // fs.readFile()
@@ -50,45 +45,28 @@ exports.readListOfUrls = function(callback) {
 exports.isUrlInList = function(url, callback) { 
   
   exports.readListOfUrls((data) => {
+    
+    console.log('URL list:', data);
+    
     if (data.indexOf(url) === -1) {
       callback(null, null); 
       exports.addUrlToList(url);
-    //if not in list, 
-      //send loading.html to client
-      //add url to list
       
-    } else if (exports.isUrlArchived((check) => check)) {
-    //return site to client
-    
-    } else if (data.indexOf(url) !== -1 && !exports.isUrlArchived((check) => check)) {
-    //serve loading.html to client
-      callback(null, null); 
-    }
-    
-          
-    //if the data is in the list, 
-    // and it is in the is UrlArachived is true
-    //send client to url endpoint in archives/sites
-    //because, if crom hasn't added the site, we don't 
-    //want to send the user to an endpoint we don't have
-      
-    //send archived site to client
-    //if this url is in our object referencing downloaded sites
-    //send our client to that endpoint
+    } else {
+      exports.isUrlArchived(url, (check) => {
+        if (check) {
+          callback(null, true);
+        } else {
+          callback(null, null);
+        }
+      });
+    } 
   });
-  // call readListOfUrls(callback)
-  //callback = f() ??
-
-  //if url is in list,
-  
-  // IF error:
-  //callback();
-  // IF NOT IN LIST;
-  //callback(null, null);
 };
 
 exports.addUrlToList = function(url, callback) {
   //fs.appendFile to our sites.txt
+  url = url + '\n';
   fs.appendFile(exports.paths.list, url, 'utf8', (err) => {
     if (err) {
       throw err;
@@ -100,31 +78,35 @@ exports.addUrlToList = function(url, callback) {
 };
 
 exports.isUrlArchived = function(url, callback) {
-  //check tests for ideas to see if a url has been archived or not
-  //worker? 
-  //work is going to read our list of urls, 
-  // if a url in the list is not archives/sites
-  // then we need to call downloadUrls
 
-  fs.access(exports.paths.archivedSites + '/' + url, fs.constants.F_OK, (err) => {
+  fs.access(exports.paths.archivedSites + '/' + url + '.txt', fs.constants.F_OK, (err) => {
     if (err) {
+      console.log('isUrlArchived: FALSE');
       callback(false);
     } else {
+      console.log('isUrlArchived: TRUE');
       callback(true);
     }
-  }); 
- 
-    
+  });     
 };
 
-exports.downloadUrls = function(urls) {
-  //this will have to do some .ajax request, get the site info
-  //add site info as a new file in archives/sites
-  
-  //once downloadUrls is completed,
-  //add urls to an object
-  //which will later be access to serve client urls that 
-  //have been added to archives/sites/...url
+exports.downloadUrls = function(url) {
+ 
   console.log('downloading: ', url);
     
+  request('http://' + url).pipe(fs.createWriteStream(exports.paths.archivedSites + '/' + url + '.txt'));
+  
+  console.log('after request');
 };
+
+
+
+
+
+
+
+
+
+
+
+

@@ -11,17 +11,22 @@ var archive = require('../helpers/archive-helpers');
 //requset module npm 
 //fs method to check files 
 
-
-archive.readListOfUrls((data) => {
+exports.htmlFetcher = function() {
+  archive.readListOfUrls((data) => {
   //for each element in data
   //check to see if in archive
   //if not then call download url
-  data.forEach((site) => {
-    archive.isUrlArchived(site, (check) => {
-      if (!check) {
-        archive.downloadUrl(site);
-      }
-    });
-  });
+    console.log('entered htmlfetcher');
   
-});
+    data.forEach((site) => {
+      archive.isUrlArchived(site, (check) => {
+        if (!check) {
+          archive.downloadUrls(site);
+        }
+      });
+    });
+  
+  });
+};
+
+exports.htmlFetcher();
